@@ -34,8 +34,8 @@ class Strike(SilentCards):
     TARGETS = True
 
     def __init__(self):
-        self.name = 'Strike'
-        self.description = 'Deal 6 damage.'
+        self.name = "Strike"
+        self.description = "Deal 6 damage."
         self.cost = 1
 
     def play(self, character, target, deck, disc, hand, exha):
@@ -47,8 +47,8 @@ class Defend(SilentCards):
     TARGETS = False
     
     def __init__(self):
-        self.name = 'Defend'
-        self.description = 'Gain 5 block.'
+        self.name = "Defend"
+        self.description = "Gain 5 block."
         self.cost = 1
 
     def play(self, character, target, deck, disc, hand, exha):
@@ -60,8 +60,8 @@ class Survivor(SilentCards):
     TARGETS = False
 
     def __init__(self):
-        self.name = 'Survivor'
-        self.description = 'Gain 8 block. Discard a card.'
+        self.name = "Survivor"
+        self.description = "Gain 8 block. Discard a card."
         self.cost = 1
 
     def play(self, character, target, deck, disc, hand, exha):
@@ -74,14 +74,14 @@ class Neutralize(SilentCards):
     TARGETS = True
 
     def __init__(self):
-        self.name = 'Neutralize'
-        self.description = 'Deal 3 damage. Apply 1 weak.'
+        self.name = "Neutralize"
+        self.description = "Deal 3 damage. Apply 1 weak."
         self.cost = 0
 
     def play(self, character, target, deck, disc, hand, exha):
         character.attack(target, 3)
         target.weak +=1
-        print(f'{target.name} gained 1 weak!')
+        print(f"{target.name} gained 1 weak!")
         return deck, disc, hand, exha
     
 class Acrobatics(SilentCards):
@@ -89,8 +89,8 @@ class Acrobatics(SilentCards):
     TARGETS = False
 
     def __init__(self):
-        self.name = 'Acrobatics'
-        self.description = 'Draw 3 cards. Discard a card.'
+        self.name = "Acrobatics"
+        self.description = "Draw 3 cards. Discard a card."
         self.cost = 1
 
     def play(self, character, target, deck, disc, hand, exha):
@@ -103,8 +103,8 @@ class Backflip(SilentCards):
     TARGETS = False
 
     def __init__(self):
-        self.name = 'Backflip'
-        self.description = 'Gain 5 block. Draw 2 cards.'
+        self.name = "Backflip"
+        self.description = "Gain 5 block. Draw 2 cards."
         self.cost = 1
 
     def play(self, character, target, deck, disc, hand, exha):
@@ -162,17 +162,17 @@ class Being:
             dmg = truedmgcalc(self, dmg, target)
         if target.block == 0:
             target.hp -= dmg
-            print(f'{self.name} dealt {dmg} damage to {target.name},
-                   whose health is now {target.hp}.')
+            print(f"{self.name} dealt {dmg} damage to {target.name},"
+                    f" whose health is now {target.hp}.")
         elif target.block >= dmg:
             target.block = target.block - dmg
-            print(f'{target.name}\'s block reduced by {dmg}.
-                   They have {target.block} block remaining.')
+            print(f"{target.name}\'s block reduced by {dmg}."
+                   f" They have {target.block} block remaining.")
         else:
             damagetaken = dmg - target.block
             target.hp -= damagetaken
-            print(f'{target.name}\'s block was broken, and took
-                   {damagetaken} damage.')
+            print(f"{target.name}'s block was broken, and took"
+                    f" {damagetaken} damage.")
             target.block = 0
         # Checks whether target dies from the attack, and ends the
         # battle if the user dies, or all enemies die.
@@ -194,8 +194,8 @@ class Being:
             if self.frail > 0:
                 blockadd = math.floor(blockadd * 0.75)
         self.block += blockadd
-        print(f'{self.name} gained {blockadd} block, and now has
-               {self.block} block.')
+        print(f"{self.name} gained {blockadd} block, and now has"
+               f" {self.block} block.")
 
 
 class Character(Being):
@@ -231,9 +231,9 @@ class Character(Being):
           List Current character exhaust pile.
         """
         self.block = 0
-        print(f'{self.name}\'s block returned to 0.')
+        print(f"{self.name}'s block returned to 0.")
         self.current_mana = self.mana_per_turn
-        print(f'{self.name}\' energy reset to 3.')
+        print(f"{self.name}'s energy reset to 3.")
         deck, disc, hand = draw(deck, disc, hand, self.starting_hand_size)
         return deck, disc, hand, exha
     
@@ -255,25 +255,25 @@ class Character(Being):
         """
         if self.ritual > 0:
             self.strength += self.ritual
-            print(f'{self.name}\'s ritual increased their strength by
-                   {self.ritual} to {self.strength}.')
+            print(f"{self.name}'s ritual increased their strength by"
+                   f" {self.ritual} to {self.strength}.")
         # The following traits decrement at the end of a being's turn.
         if self.weak > 0 :
             self.weak -= 1
-            print(f'{self.name}\'s weak decreased by 1 to {self.weak}.')
+            print(f"{self.name}'s weak decreased by 1 to {self.weak}.")
         if self.vulnerable > 0 :
             self.vulnerable -= 1
-            print(f'{self.name}\'s weak decreased by 1 to {self.weak}.')
+            print(f"{self.name}'s weak decreased by 1 to {self.weak}.")
         if self.frail > 0 :
             self.frail -= 1
-            print(f'{self.name}\'s vulnerable decreased by 1 to {self.weak}.')
+            print(f"{self.name}'s vulnerable decreased by 1 to {self.weak}.")
         deck, disc, hand = discard(deck, disc, hand, len(hand))
         return deck, disc, hand, exha
 
 
 class Silent(Character):
     """A player character; contains starting traits and deck."""
-    def __init__(self, name='Silent', maxhp=77, hp=0, block=0, strength=0,
+    def __init__(self, name="Silent", maxhp=77, hp=0, block=0, strength=0,
                   dexterity=0, focus=0, vulnerable=0, weak=0, frail=0,
                     ritual=0, mana_per_turn=3, starting_hand_size=5):
         super().__init__(name, maxhp, hp, block, strength, dexterity,
@@ -306,21 +306,21 @@ class Enemy(Being):
         """
         if self.ritual > 0:
             self.strength += self.ritual
-            print(f'{self.name}\'s ritual increased their strength by
-                   {self.ritual} to {self.strength}.')
+            print(f"{self.name}'s ritual increased their strength by"
+                    f" {self.ritual} to {self.strength}.")
         if self.weak > 0 :
             self.weak -= 1
-            print(f'{self.name}\'s weak decreased by 1 to {self.weak}.')
+            print(f"{self.name}'s weak decreased by 1 to {self.weak}.")
         if self.vulnerable > 0 :
             self.vulnerable -= 1
-            print(f'{self.name}\'s weak decreased by 1 to {self.weak}.')
+            print(f"{self.name}'s weak decreased by 1 to {self.weak}.")
         if self.frail > 0 :
             self.frail -= 1
-            print(f'{self.name}\'s vulnerable decreased by 1 to {self.weak}.')
+            print(f"{self.name}'s vulnerable decreased by 1 to {self.weak}.")
 
 
 class Cultist(Enemy):
-    def __init__(self, name='Cultist', maxhp=random.randint(50,56), hp=0,
+    def __init__(self, name="Cultist", maxhp=random.randint(50,56), hp=0,
                   block=0, strength=0, dexterity=0, focus=0, vulnerable=0,
                     weak=0, frail=0, ritual=0):
         super().__init__(name, maxhp, hp, block, strength, dexterity, focus,
@@ -341,26 +341,26 @@ class Cultist(Enemy):
           int Current turn number.
         """
         if turn == 1:
-            return (f'{self.name} intends to buff!\n', 0)
+            return (f"{self.name} intends to buff!\n", 0)
         else:
             attackingfor = truedmgcalc(self, 1, target)
-            return (f'{self.name} is going to attack you for
-                     {attackingfor} damage!', 1)
+            return (f"{self.name} is going to attack you for"
+                     f" {attackingfor} damage!", 1)
         
-    def action(self, target, action):
+    def action(self, target, act):
         """Carries out the action associated with the index stored in
-        action.
+        act.
 
         self
           Enemy
         target
           Character Current player character.
-        action
+        act
           int Index associated with this turns intent.
         """
-        if action == 0:
+        if act == 0:
             self.ritual =+ 5
-            print(f'{self.name} gained 5 ritual!\n')
+            print(f"{self.name} gained 5 ritual!\n")
         else:
             attackingfor = truedmgcalc(self, 1, target)
             self.attack(target, 1)
@@ -381,11 +381,11 @@ class JawWorm(Enemy):
         Worm from using chomp twice in a row, bellow twice in a row, or
         thrash thrice in a row.
         """
-        chomp = (f'{self.name} is going to attack you for
-                  {truedmgcalc(self, 11, target)} damage!', 0)
-        thrash = (f'{self.name} is going to block and attack you for
-                   {truedmgcalc(self, 7, target)} damage!', 1)
-        bellow = (f'{self.name} is going to buff and block!', 2)
+        chomp = (f"{self.name} is going to attack you for"
+                    f" {truedmgcalc(self, 11, target)} damage!", 0)
+        thrash = (f"{self.name} is going to block and attack you for"
+                   f" {truedmgcalc(self, 7, target)} damage!", 1)
+        bellow = (f"{self.name} is going to buff and block!", 2)
         if turn == 1:
             return chomp
         outcome = random.random()
@@ -478,7 +478,7 @@ def print_card_list(lis):
     """Used to print lists of cards for the user to read.
 
     lis
-      List List containing Card objects.
+      List containing Card objects.
     """
     for card in enumerate(lis):
         print(f'{card[0] + 1} : {card[1].name} | cost: {card[1].cost}
@@ -494,40 +494,40 @@ def print_being(being):
     """
     if type(being) == list:
         for x in enumerate(being):
-            print(f'{x[0]+1} | {x[1].name} | HP:{x[1].hp}/{x[1].maxhp}
-                   | Block: {x[1].block}', end='')
+            print(f"{x[0]+1} | {x[1].name} | HP:{x[1].hp}/{x[1].maxhp}"
+                    f" | Block: {x[1].block}", end='')
             if x[1].strength > 0:
-                print(f' | Strength: {x[1].strength}', end='')
+                print(f" | Strength: {x[1].strength}", end='')
             if x[1].dexterity > 0:
-                print(f' | Dexterity: {x[1].dexterity}', end='')
+                print(f" | Dexterity: {x[1].dexterity}", end='')
             if x[1].focus > 0:
-                print(f' | Focus: {x[1].focus}', end='')
+                print(f" | Focus: {x[1].focus}", end='')
             if x[1].vulnerable > 0:
-                print(f' | Vulnerable: {x[1].vulnerable}', end='')
+                print(f" | Vulnerable: {x[1].vulnerable}", end='')
             if x[1].weak > 0:
-                print(f' | Weak: {x[1].weak}', end='')
+                print(f" | Weak: {x[1].weak}", end='')
             if x[1].frail > 0:
-                print(f' | Frail: {x[1].frail}', end='')
+                print(f" | Frail: {x[1].frail}", end='')
             if x[1].ritual > 0:
-                print(f' | Ritual: {x[1].ritual}', end='')
+                print(f" | Ritual: {x[1].ritual}", end='')
             print('')
     else:
-        print(f'{being.name} | HP:{being.hp}/{being.maxhp} | Block:
-               {being.block}', end='')
+        print(f"{being.name} | HP:{being.hp}/{being.maxhp} | Block:"
+               f" {being.block}", end='')
         if being.strength > 0:
-            print(f' | Strength: {being.strength}', end='')
+            print(f" | Strength: {being.strength}", end='')
         if being.dexterity > 0:
-            print(f' | Dexterity: {being.dexterity}', end='')
+            print(f" | Dexterity: {being.dexterity}", end='')
         if being.focus > 0:
-            print(f' | Focus: {being.focus}', end='')
+            print(f" | Focus: {being.focus}", end='')
         if being.vulnerable > 0:
-            print(f' | Vulnerable: {being.vulnerable}', end='')
+            print(f" | Vulnerable: {being.vulnerable}", end='')
         if being.weak > 0:
-            print(f' | Weak: {being.weak}', end='')
+            print(f" | Weak: {being.weak}", end='')
         if being.frail > 0:
-            print(f' | Frail: {being.frail}', end='')
+            print(f" | Frail: {being.frail}", end='')
         if being.ritual > 0:
-            print(f' | Ritual: {being.ritual}', end='')
+            print(f" | Ritual: {being.ritual}", end='')
         print('')
 
 def battle(character, enemy):
@@ -552,19 +552,18 @@ def battle(character, enemy):
     while True: # Contains battle.
         deck, disc, hand, exha = character.start_turn(deck, disc, hand, exha)
         turn += 1
-        print(f'TURN {turn}\n')
+        print(f"TURN {turn}\n")
         actioninfo = enemy.action_intent(character, turn)
         print_being(enemy) # Prints enemy stats.
         print(actioninfo[0]) # Prints enemy intent.
         print_being(character) # Prints character stats.
         while True: # Contains users turn.
-            print('cards in hand:')
+            print("Cards in hand:")
             print_card_list(hand)
-            player_action = input(f'Enter the index of the card to play it, or
-                                   P to end your
-                                   turn. {character.current_mana} energy
-                                     remaining.')
-            if player_action in ('P','p'):
+            player_action = input("Enter the index of the card to play it, or"
+                                   " P to end your turn."
+                                f" {character.current_mana} energy remaining.")
+            if player_action in ('P','p','pass','Pass'):
                 break # Ends the users turn.
             card_index = int(player_action) - 1
             # Checks if given index is smaller than hand size and that
@@ -579,7 +578,7 @@ def battle(character, enemy):
                 character.current_mana -= temp.cost
                 disc.append(temp)
             else:
-                print('Invalid input. Please try again.')
+                print("Invalid input. Please try again.")
 
         # End player turn.
         deck, disc, hand, exha = character.end_turn(deck, disc, hand, exha)
@@ -621,25 +620,25 @@ def multibattle(character, enemylist):
         while True:
             print('cards in hand:\n')
             print_card_list(hand)
-            player_action = input(f"Enter the index of the card to play it, or
-             P to end your turn. {character.current_mana} energy remaining. ")
-            if player_action == 'P':
+            player_action = input("Enter the index of the card to play it, or "
+            f"P to end your turn. {character.current_mana} energy remaining. ")
+            if player_action in ('P','p','pass','Pass'):
                 break
             card_index = int(player_action) - 1
             if (0 <= card_index <= len(hand)
             and character.current_mana >= hand[card_index].cost):
                 temp = hand.pop(card_index)
                 if temp.TARGETS == True:
-                    print('Select target enemy:')
+                    print("Select target enemy: ")
                     print_being(enemylist)
                     target = enemylist[int(input())-1]
-                print(f'Played {temp.name}!')
+                print(f"Played {temp.name}!")
                 deck, disc, hand, exha = temp.play(character, target, deck,
                                                     disc, hand, exha)
                 character.current_mana -= temp.cost
                 disc.append(temp)
             else:
-                print('Invalid input. Please try again.')
+                print("Invalid input. Please try again.")
         deck, disc, hand, exha = character.end_turn(deck, disc, hand, exha)
         # End player turn.
 
@@ -696,7 +695,7 @@ def discard(deck, disc, hand, n=1):
             disc.extend(hand)
             hand = []
         else:
-            print('Which card would you like to discard?')
+            print("Which card would you like to discard? ")
             print_card_list(hand)
             disc.append(hand.pop(int(input())-1))
     return deck, disc, hand
